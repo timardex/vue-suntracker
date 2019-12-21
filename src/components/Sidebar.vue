@@ -12,7 +12,7 @@
                     This app is a live Sun tracker which is using your geolocation (Latitude and Longitude). You need to give access for the app to use it!
                 </p>
 
-                <button class="btn btn-warning mb-3">{{btnText}}</button>
+                <button class="btn btn-warning mb-3" @click="pushButton(); getCoordinates(); loadSunriseSunset()">{{btnText}}</button>
 
                 <div class="info-list text-left" v-if="infoActive">
                     <p class="text-center">This is your information:</p>
@@ -34,16 +34,20 @@
 </template>
 
 <script>
+import axios from 'axios'
+import APIKey from '@/components/APIKey.js'
 import LoadingSpinner from '@/components/LoadingSpinner'
+
 export default {
     components: {
-        LoadingSpinner
+        LoadingSpinner,
     },
     data() {
         return {
             coordinates: [],
             latitude: null,
-            longitude: null
+            longitude: null,
+            APIKey: APIKey
         }
     },
     methods: {
@@ -69,9 +73,33 @@ export default {
                 this.latitude = parseFloat(this.coordinates.map(val => val.lat))
                 this.longitude = parseFloat(this.coordinates.map(val => val.lng))
             }, 1000)
+
+            
         },
         toggleSidebar() {
             return this.$store.dispatch('toggleSidebar')
+        },
+        pushButton() {
+            return this.$store.dispatch('pushButton')
+        },
+        getCoordinates() {
+            setTimeout(() => {
+                return this.$store.dispatch('getCoordinates', {
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                })
+            }, 3000)
+        },
+        loadSunriseSunset() {
+            let url = `https://api.openweathermap.org/data/2.5/weather?lat=${this.latitude}&lon=${this.longitude}&APPID=${this.APIKey}`;
+            setTimeout(() => {
+                axios.get(url)
+                    .then(response => {
+                        return this.$store.dispatch('loadSunriseSunset', response)
+                    }).catch(response => {
+                        return Promise.reject(response)
+                    })
+            }, 4000)
         }
     },
     mounted() {
