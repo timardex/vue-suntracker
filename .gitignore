@@ -7,6 +7,9 @@ node_modules
 firebase-debug.log
 firebase.json
 
+# API
+/src/components/APIKey.js
+
 # local env files
 .env.local
 .env.*.local
