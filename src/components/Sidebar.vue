@@ -56,8 +56,13 @@ export default {
                 navigator.geolocation.getCurrentPosition(resolve, reject, options);
             });
         },
-
-        thePosition() {
+        toggleSidebar() {
+            return this.$store.dispatch('toggleSidebar')
+        },
+        pushButton() {
+            return this.$store.dispatch('pushButton')
+        },
+        getCoordinates() {
             this.getPosition()
             .then((position) => {
                 this.coordinates.push({
@@ -72,27 +77,16 @@ export default {
             setTimeout(() => {
                 this.latitude = parseFloat(this.coordinates.map(val => val.lat))
                 this.longitude = parseFloat(this.coordinates.map(val => val.lng))
-            }, 1000)
-
-            
-        },
-        toggleSidebar() {
-            return this.$store.dispatch('toggleSidebar')
-        },
-        pushButton() {
-            return this.$store.dispatch('pushButton')
-        },
-        getCoordinates() {
-            setTimeout(() => {
                 return this.$store.dispatch('getCoordinates', {
                     latitude: this.latitude,
                     longitude: this.longitude
                 })
-            }, 3000)
+
+            }, 2000)
         },
         loadSunriseSunset() {
-            let url = `https://api.openweathermap.org/data/2.5/weather?lat=${this.latitude}&lon=${this.longitude}&APPID=${this.APIKey}`;
             setTimeout(() => {
+                let url = `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.lng}&APPID=${this.APIKey}`;
                 axios.get(url)
                     .then(response => {
                         return this.$store.dispatch('loadSunriseSunset', response)
@@ -101,9 +95,6 @@ export default {
                     })
             }, 4000)
         }
-    },
-    mounted() {
-        this.thePosition()
     },
     computed: {
         sidebarActive() {
