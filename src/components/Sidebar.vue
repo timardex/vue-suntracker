@@ -28,11 +28,6 @@
                 </div>
 
                 <LoadingSpinner />
-
-                <div class="show-error-msg text-center mt-4" v-if="showErrorMsg">
-                    <h6>Oops! <br> Something went wrong</h6>
-                    <p>Please refresh the app and push the <b>Track the Sun</b> button again!</p>
-                </div>
             </div>
         </div>
     </div>
@@ -66,7 +61,6 @@ export default {
         coordinates: [],
         latitude: null,
         longitude: null,
-        showErrorMsg: false,
         APIKey,
     }),
     methods: {
@@ -104,7 +98,6 @@ export default {
                     .then(response => {
                         return this.$store.dispatch('loadSunriseSunset', response)
                     }).catch(response => {
-                        this.showErrorMsg = true
                         return Promise.reject(response)
                     })
             }, 4000)
@@ -118,3 +111,68 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+.information {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    z-index: 1000;
+    transition: all .3s linear;
+    background: rgba(255,255,255,.7);
+
+    &.inactive {
+        right: -250px;
+    }
+
+    &.active {
+        right: 0;
+    }
+
+    .trigger-sidebar {
+        position: absolute;
+        top: 0;
+        left: -25px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background: rgba(255,255,255,.7);
+
+        img {
+            width: 20px;
+        }
+    }
+
+    
+
+    .inner {
+        height: 100%;
+        overflow: hidden;
+
+        .inner-info {
+            overflow-y: auto;
+            padding: 1rem;
+            height: 90%;
+        }
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: 0 !important;
+    }
+
+    .info-list {
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    }
+}
+</style>
