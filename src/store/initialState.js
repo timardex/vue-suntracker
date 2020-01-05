@@ -1,4 +1,4 @@
-const initialState = {
+const state = {
     lat: null,
     lng: null,
     sunrise: null,
@@ -16,4 +16,4 @@ const initialState = {
     loading_calculation: false,
 }
 
-export default initialState;
+export default state;

@@ -1,29 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import initialState from './initialState'
+import state from './initialState'
 import {convertAMPMto24h, convertTimestamp} from './helpers'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    initialState
-  },
+  state,
   mutations: {
     TOGGLE_SIDEBAR: (state) => {
-      state.initialState.sidebarActive = !state.initialState.sidebarActive;
+      state.sidebarActive = !state.sidebarActive;
     },
     PUSH_BTN: (state) => {
-      state.initialState.btnText = 'Calculating ...';
-      state.initialState.loading_calculation = true;
-      state.initialState.infoActive = false;
+      state.btnText = 'Calculating ...';
+      state.loading_calculation = true;
+      state.infoActive = false;
     },
     GET_COORDINATES: (state, payload) => {
-      state.initialState.lat = payload.latitude;
-      state.initialState.lng = payload.longitude;
-      state.initialState.btnText = 'Track the Sun';
-      state.initialState.loading_calculation = false;
-      state.initialState.infoActive = true;
+      state.lat = payload.latitude;
+      state.lng = payload.longitude;
+      state.btnText = 'Track the Sun';
+      state.loading_calculation = false;
+      state.infoActive = true;
     },
     LOAD_SUNRISE_SUNSET: (state, payload) => {
       let sunrise = convertAMPMto24h(payload.data.sys.sunrise);
@@ -91,15 +89,15 @@ export default new Vuex.Store({
           _boolean = false;
       }
 
-      state.initialState.sunrise = convertTimestamp(payload.data.sys.sunrise),
-      state.initialState.sunset = convertTimestamp(payload.data.sys.sunset),
-      state.initialState.country = payload.data.sys.country,
-      state.initialState.timenow = `${hours}:${minutes}`,
-      state.initialState.today =`${dd}/${mm}/${yyyy}`,
-      state.initialState.sunStyle = _sunStyle,
-      state.initialState.sunUpDown = _sunUpDown,
-      state.initialState.boolean = _boolean,
-      state.initialState.scenery = _scenery
+      state.sunrise = convertTimestamp(payload.data.sys.sunrise),
+      state.sunset = convertTimestamp(payload.data.sys.sunset),
+      state.country = payload.data.sys.country,
+      state.timenow = `${hours}:${minutes}`,
+      state.today =`${dd}/${mm}/${yyyy}`,
+      state.sunStyle = _sunStyle,
+      state.sunUpDown = _sunUpDown,
+      state.boolean = _boolean,
+      state.scenery = _scenery
     }
   },
   actions: {

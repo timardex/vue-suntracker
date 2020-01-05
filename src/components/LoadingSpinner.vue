@@ -7,11 +7,12 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
     computed: {
-        loading_calculation() {
-            return this.$store.state.initialState.loading_calculation
-        }
+        ...mapState([
+            'loading_calculation'
+        ])
     }
 }
 </script>

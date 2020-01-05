@@ -18,20 +18,15 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
     computed: {
-        boolean() {
-            return this.$store.state.initialState.boolean
-        },
-        scenery() {
-            return this.$store.state.initialState.scenery
-        },
-        sunStyle() {
-            return this.$store.state.initialState.sunStyle
-        },
-        sunUpDown() {
-            return this.$store.state.initialState.sunUpDown
-        },
+        ...mapState([
+            'boolean',
+            'scenery',
+            'sunStyle',
+            'sunUpDown',
+        ])
     }
 }
 </script>

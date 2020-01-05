@@ -28,12 +28,18 @@
                 </div>
 
                 <LoadingSpinner />
+
+                <div class="show-error-msg text-center mt-4" v-if="showErrorMsg">
+                    <h6>Oops! <br> Something went wrong</h6>
+                    <p>Please refresh the app and push the <b>Track the Sun</b> button again!</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import axios from 'axios'
 import APIKey from '@/components/APIKey.js'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -42,25 +48,32 @@ export default {
     components: {
         LoadingSpinner,
     },
-    data() {
-        return {
-            coordinates: [],
-            latitude: null,
-            longitude: null,
-            APIKey: APIKey
-        }
+    computed: {
+        ...mapState([
+            'sidebarActive',
+            'btnText',
+            'infoActive',
+            'lat',
+            'lng',
+            'country',
+            'sunrise',
+            'sunset',
+            'timenow',
+            'today'
+        ])
     },
+    data: () => ({
+        coordinates: [],
+        latitude: null,
+        longitude: null,
+        showErrorMsg: false,
+        APIKey,
+    }),
     methods: {
         getPosition(options){
             return new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject, options);
             });
-        },
-        toggleSidebar() {
-            return this.$store.dispatch('toggleSidebar')
-        },
-        pushButton() {
-            return this.$store.dispatch('pushButton')
         },
         getCoordinates() {
             this.getPosition()
@@ -91,42 +104,17 @@ export default {
                     .then(response => {
                         return this.$store.dispatch('loadSunriseSunset', response)
                     }).catch(response => {
+                        this.showErrorMsg = true
                         return Promise.reject(response)
                     })
             }, 4000)
-        }
-    },
-    computed: {
-        sidebarActive() {
-            return this.$store.state.initialState.sidebarActive
         },
-        btnText() {
-            return this.$store.state.initialState.btnText
+        toggleSidebar() {
+            return this.$store.dispatch('toggleSidebar')
         },
-        infoActive() {
-            return this.$store.state.initialState.infoActive
+        pushButton() {
+            return this.$store.dispatch('pushButton')
         },
-        lat() {
-            return this.$store.state.initialState.lat
-        },
-        lng() {
-            return this.$store.state.initialState.lng
-        },
-        country() {
-            return this.$store.state.initialState.country
-        },
-        sunrise() {
-            return this.$store.state.initialState.sunrise
-        },
-        sunset() {
-            return this.$store.state.initialState.sunset
-        },
-        timenow() {
-            return this.$store.state.initialState.timenow
-        },
-        today() {
-            return this.$store.state.initialState.today
-        },
-    },
+    }
 }
 </script>
