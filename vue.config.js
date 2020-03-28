@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/vue-img-gallery-and-carousel/'
+  publicPath: '/vue-suntracker/'
 }
